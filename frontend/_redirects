@@ -1,0 +1,11 @@
+# Main app
+/          /kundali-final.html    200
+/app       /kundali-final.html    200
+/kundali   /kundali-final.html    200
+
+# Clean URLs
+/chart/*   /kundali-final.html    200
+
+# Legacy redirects
+/kundali-pro.html      /kundali-final.html    301
+/kundali-ultimate.html /kundali-final.html    301
