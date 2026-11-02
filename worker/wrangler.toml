@@ -1,0 +1,4 @@
+name = "kundali-worker"
+main = "src/index.js"
+compatibility_date = "2026-04-21"
+compatibility_flags = ["nodejs_compat"]

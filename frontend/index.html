@@ -489,7 +489,7 @@ footer{text-align:center;padding:16px;color:rgba(245,234,213,.2);font-size:.78re
   <div id="tvp" class="tab-content"><div class="card">
     <div class="sec-title">✦ Varshaphal · वर्षफल (Solar Return)</div>
     <div class="varsha-input">
-      <div class="fg"><label>Year</label><input type="number" id="varsha-yr" style="width:90px" value="2025" min="1900" max="2100"></div>
+      <div class="fg"><label>Year</label><input type="number" id="varsha-yr" style="width:90px" min="1900" max="2100"></div>
       <button class="calc-btn" style="min-width:160px;padding:10px 16px;margin-top:0" onclick="calcVarshaphal()">Calculate</button>
     </div>
     <div id="varsha-content"></div>
@@ -862,37 +862,25 @@ function detectYogas(pl,lagna){
   const ben=pn=>['Jupiter','Venus','Mercury','Moon'].includes(pn);
   const mal=pn=>['Sun','Mars','Saturn','Rahu','Ketu'].includes(pn);
   function add(n,hi,ic,str,desc,dhi,src){out.push({name:n,hi,icon:ic,str,desc,dhi,src});}
-  // Pancha Mahapurush
   if(inK('Mars')&&['own','exalted'].includes(st('Mars')))add('Ruchaka Yoga','रुचक योग','⚔️',92,'Mars strong in kendra — courage, military/police success, leadership & physical prowess.','केंद्र में बलवान मंगल — साहस, सैनिक सफलता।','BPHS Ch.35');
   if(inK('Jupiter')&&['own','exalted'].includes(st('Jupiter')))add('Hamsa Yoga','हंस योग','🦢',95,'Jupiter exalted/own in kendra — wisdom, spirituality, nobility, prosperity and teaching.','केंद्र में उच्च बृहस्पति — ज्ञान, आध्यात्म।','BPHS Ch.35');
   if(inK('Venus')&&['own','exalted'].includes(st('Venus')))add('Malavya Yoga','मालव्य योग','💎',90,'Venus strong in kendra — beauty, luxury, arts, romance and refined life.','केंद्र में बलवान शुक्र — सौंदर्य, कला, विलास।','BPHS Ch.35');
   if(inK('Saturn')&&['own','exalted'].includes(st('Saturn')))add('Shasha Yoga','शश योग','🪐',86,'Saturn strong in kendra — longevity, authority, command over masses.','केंद्र में बलवान शनि — दीर्घायु, जनता पर अधिकार।','BPHS Ch.35');
   if(inK('Mercury')&&['own','exalted'].includes(st('Mercury')))add('Bhadra Yoga','भद्र योग','🌿',88,'Mercury strong in kendra — intelligence, eloquence, trade, writing success.','केंद्र में बलवान बुध — बुद्धि, व्यापार।','BPHS Ch.35');
-  // Gaja Kesari
   const jupFromMoon=((p.Jupiter.h-p.Moon.h+12)%12)+1;
   if([1,4,7,10].includes(jupFromMoon)||same('Jupiter','Moon'))add('Gaja Kesari Yoga','गज केसरी योग','🐘',88,'Jupiter in kendra from Moon — fame, wisdom, prosperity, eloquence. Most auspicious yoga.','चंद्र से केंद्र में बृहस्पति — यश, ज्ञान, समृद्धि।','BPHS');
-  // Budha Aditya
   if(same('Sun','Mercury'))add('Budha-Aditya Yoga','बुध-आदित्य योग','🌟',78,'Sun-Mercury conjunction — high intelligence, administrative skills, government career.','सूर्य-बुध युति — प्रखर बुद्धि, सरकारी पद।','Saravali');
-  // Lakshmi
   if(inT('Venus')&&['own','exalted'].includes(st('Venus'))&&inK('Jupiter'))add('Lakshmi Yoga','लक्ष्मी योग','🌺',96,'Venus in trikona + Jupiter in kendra — supreme wealth, beauty, noble partner.','त्रिकोण में शुक्र + केंद्र में बृहस्पति — महालक्ष्मी।','Phaladeepika');
-  // Saraswati
   if(['own','exalted','friendly'].includes(st('Mercury'))&&['own','exalted','friendly'].includes(st('Jupiter'))&&['own','exalted','friendly'].includes(st('Venus')))add('Saraswati Yoga','सरस्वती योग','📚',93,'Mercury+Jupiter+Venus all strong — supreme intelligence, art, music, poetry.','बुध+गुरु+शुक्र — सर्वोच्च बुद्धि, ललित कला।','Jatak Parijata');
-  // Lagna Bala
   if(['own','exalted','friendly'].includes(st(RL[lr]))||inK(RL[lr]))add('Lagna Bala Yoga','लग्न बल योग','👑',80,'Lagna lord strong/in kendra — powerful personality, leadership, health.','लग्नेश बलवान — प्रबल व्यक्तित्व।','BPHS');
-  // 9th lord in kendra
   if(inK(RL[(lr+8)%12]))add('Bhagya Yoga','भाग्य योग','🍀',83,'9th lord in kendra — exceptional fortune, dharma, father\'s blessings.','नवमेश केंद्र में — अपार भाग्य।','Phala Deepika');
-  // Dhana
   if(p[RL[(lr+1)%12]].h===11||p[RL[(lr+10)%12]].h===2)add('Dhana Yoga','धन योग','💰',76,'2nd/11th lords mutually connected — wealth accumulation.','धनेश-लाभेश संबंध — धन।','BPHS');
   if([2,11].includes(p.Jupiter.h)||[2,11].includes(p.Venus.h))add('Kubera Yoga','कुबेर योग','💵',78,'Jupiter/Venus in 2nd or 11th — abundant wealth.','2/11 में शुभ ग्रह — धन।','Saravali');
-  // Viparita Raja Yoga
   let vc=0;['Mars','Saturn','Rahu'].forEach(pn=>{if([6,8,12].includes(p[pn].h))vc++;});
   if(vc>=2)add('Viparita Raja Yoga','विपरीत राजयोग','🔄',84,'Malefics in dusthanas — triumph over adversity, power after hardship.','दुस्थानों में पाप — संघर्ष के बाद राज।','Brihat Jataka');
-  // Chandra-Mangal
   if(same('Moon','Mars'))add('Chandra-Mangal Yoga','चंद्र-मंगल योग','🌙',70,'Moon-Mars — financial acumen, real estate, strong will.','चंद्र-मंगल — धन बुद्धि, संपत्ति।','Phaladeepika');
-  // Adhi
   const adhi=['Jupiter','Venus','Mercury'].filter(pn=>{const diff=((p[pn].h-p.Moon.h+12)%12)+1;return[6,7,8].includes(diff);});
   if(adhi.length>=2)add('Adhi Yoga','आधि योग','🏆',87,'2+ benefics in 6-7-8 from Moon — minister/commander success.','चंद्र से 6,7,8 में शुभ — मंत्री/सेनापति।','Brihat Jataka');
-  // Sunapha/Anapha/Durudhura
   const mS=p.Moon.r;const bef=(mS+11)%12,aft=(mS+1)%12;
   const befP=PE.slice(1,8).filter(pn=>pn!=='Moon'&&p[pn].r===bef);
   const aftP=PE.slice(1,8).filter(pn=>pn!=='Moon'&&p[pn].r===aft);
@@ -900,21 +888,16 @@ function detectYogas(pl,lagna){
   if(befP.length>0)add('Anapha Yoga','अनफा योग','🌛',67,'Planet in 12th from Moon — pleasures, freedom from debts.','चंद्र के द्वादश में ग्रह।','Brihat Jataka');
   if(befP.length>0&&aftP.length>0)add('Durudhura Yoga','दुरुधुरा योग','🌕',74,'Planets both sides of Moon — wealth from multiple sources.','चंद्र दोनों ओर — बहुप्रकार धन।','Brihat Jataka');
   if(befP.length===0&&aftP.length===0&&![1,4,7,10].includes(p.Moon.h))add('Kemadruma Yoga','केमद्रुम योग','⚠️',20,'No planets flanking Moon — hardships, loneliness. Cancellable by other yogas.','चंद्र के आसपास कोई ग्रह नहीं — कष्ट।','Brihat Jataka');
-  // Solar yogas
   if(same('Sun','Mars'))add('Surya-Mangal Yoga','सूर्य-मंगल योग','🔥',72,'Sun-Mars — fierce authority, technical/military expertise.','सूर्य-मंगल — तीव्र ऊर्जा, तकनीक।','Phaladeepika');
   if(same('Sun','Jupiter'))add('Surya-Guru Yoga','सूर्य-गुरु योग','☀️',77,'Sun-Jupiter — wisdom + authority, spiritual leadership.','सूर्य-गुरु — ज्ञान+अधिकार।','Saravali');
   if(same('Sun','Saturn'))add('Shrapit Yoga','शापित योग','🌑',42,'Sun-Saturn — delays in career, hardship then growth.','सूर्य-शनि — विलम्बित सफलता।','Brihat Jataka');
-  // Neecha Bhanga Raja Yoga
   let nb=false;
   PE.slice(0,7).forEach(pn=>{if(pStatus(pn,rashi(pl[pn].lon))==='debilitated'){const nl2=RL[DE[pn]];if(inK(nl2)||rashi(pl[nl2].lon)===lr)nb=true;}});
   if(nb)add('Neecha Bhanga Raja Yoga','नीच भंग राजयोग','♻️',91,'Debilitation cancelled — extraordinary rise from humble beginnings.','नीच भंग — साधारण से असाधारण उत्थान।','BPHS Ch.36');
-  // Parivartana
   PE.slice(0,7).forEach(a=>{PE.slice(0,7).forEach(b=>{if(a!==b&&RL[p[a].r]===b&&RL[p[b].r]===a)add(`Parivartana (${a.substr(0,3)}-${b.substr(0,3)})`,`परिवर्तन योग`,'🔁',80,`${a} & ${b} exchange signs — mutual strength, events interlinked.`,`${a}-${b} परिवर्तन।`,'BPHS');});});
-  // Kala Sarpa
   const rl2=pl.Rahu.lon;
   const allBtw=PE.slice(0,7).every(pn=>{const d=norm(pl[pn].lon-rl2);return d<180;});
   if(allBtw)add('Kala Sarpa Yoga','काल सर्प योग','🐍',55,'All planets between Rahu-Ketu — intense karma, ups & downs, eventual liberation.','सभी ग्रह राहु-केतु के बीच — कार्मिक।','Muhurta Chintamani');
-  // Shubha Kartari
   const b4=(lr+11)%12,af=(lr+1)%12;
   const bfB=PE.slice(0,7).filter(pn=>p[pn].r===b4&&ben(pn));
   const afB=PE.slice(0,7).filter(pn=>p[pn].r===af&&ben(pn));
@@ -922,12 +905,9 @@ function detectYogas(pl,lagna){
   const bfM=PE.slice(0,7).filter(pn=>p[pn].r===b4&&mal(pn));
   const afM=PE.slice(0,7).filter(pn=>p[pn].r===af&&mal(pn));
   if(bfM.length>0&&afM.length>0)add('Papa Kartari','पाप कर्तरी योग','⚠️',30,'Malefics both sides of lagna — health challenges.','लग्न दोनों ओर पाप ग्रह।','Phaladeepika');
-  // Mahabhagya
   if(G){const isDay2=G.birthDate.getHours()>6&&G.birthDate.getHours()<18;
     if(isDay2&&[0,2,4,6,8,10].includes(lr)&&[0,2,4,6,8,10].includes(p.Moon.r)&&[0,2,4,6,8,10].includes(p.Sun.r))add('Mahabhagya Yoga','महाभाग्य योग','👑',96,'Day birth, odd signs — supreme fortune throughout life.','दिन जन्म, विषम राशि — महाभाग्य।','BPHS');}
-  // Pushkala
   if(p.Moon.h===1&&['exalted','own'].includes(st(RL[p.Moon.r])))add('Pushkala Yoga','पुष्कल योग','🌸',83,'Moon in lagna + Moon lord strong — wealthy, respected orator.','लग्न में चंद्र + चंद्रेश बलवान।','Brihat Jataka');
-  // Vesi/Vosi
   const sS=p.Sun.r,sA=(sS+1)%12,sB=(sS+11)%12;
   const aSun=PE.slice(2,7).filter(pn=>p[pn].r===sA);
   const bSun=PE.slice(2,7).filter(pn=>p[pn].r===sB);
@@ -1090,17 +1070,14 @@ function drawChart(svgEl2,pl,lagna,size){
       svgEl2.appendChild(svgTxt(lx+pfsz*.7,ly+fsz*2+pi*pfsz*1.4,pname+(isR?'ᴿ':''),pfsz*.88,pcol,'middle',false,FF));
     });
   });
-  // Border & lines
   svgEl2.appendChild(svgPoly([[x0,y0],[x1,y0],[x1,y1],[x0,y1]],'transparent','rgba(201,168,76,.85)',2.2));
   svgEl2.appendChild(svgPoly([[x0+3,y0+3],[x1-3,y0+3],[x1-3,y1-3],[x0+3,y1-3]],'transparent','rgba(201,168,76,.2)',0.7));
   [[nT,iT],[iT,nE],[nE,iE],[iE,nS],[nS,iB],[iB,nW],[nW,iW],[iW,nT]].forEach(([a,b])=>svgEl2.appendChild(svgLine(a[0],a[1],b[0],b[1],'rgba(201,168,76,.45)',1.2)));
   svgEl2.appendChild(svgLine(iW[0],iW[1],iE[0],iE[1],'rgba(201,168,76,.28)'));
   svgEl2.appendChild(svgLine(nT[0],nT[1],nS[0],nS[1],'rgba(201,168,76,.28)'));
-  // Center
   svgEl2.appendChild(svgTxt(cx,cy-W*.03,'Asc',W*.026,'rgba(201,168,76,.44)','middle'));
   svgEl2.appendChild(svgTxt(cx,cy+W*.016,(lang==='hi'?RH[lr]:RE[lr]),W*.032,'rgba(201,168,76,.9)','middle',true,lang==='hi'?'Tiro Devanagari Hindi,serif':'Cinzel Decorative,serif'));
   svgEl2.appendChild(svgTxt(cx,cy+W*.054,`${Math.floor(degInSign(lagna))}°${Math.floor((degInSign(lagna)%1)*60)}'`,W*.022,'rgba(201,168,76,.44)','middle'));
-  // Corner ornaments
   [[x0+m+1,y0+m+1],[x1-m-1,y0+m+1],[x0+m+1,y1-m-1],[x1-m-1,y1-m-1]].forEach(([ox,oy])=>{
     svgEl2.appendChild(svgEl('circle',{cx:ox,cy:oy,r:W*.016,fill:'none',stroke:'rgba(201,168,76,.32)','stroke-width':1}));
     svgEl2.appendChild(svgEl('circle',{cx:ox,cy:oy,r:2,fill:'rgba(201,168,76,.38)'}));
@@ -1145,12 +1122,10 @@ function drawSudarshan(svgId,pl,lagna){
 
 // ═══ GLOBAL STATE ═══
 let G=null,curMD=null;
-let activeDashaSystem='vi'; // single source of truth
+let activeDashaSystem='vi';
 
-// T() defined later with full ARIA support
-
-// ═══ MAIN CALCULATE ═══
-function calculateKundali(){
+// ═══ MAIN CALCULATE (inner logic, before wrapper override) ═══
+function _calculateKundaliCore(){
   const name=document.getElementById('inp-name').value||'Native';
   const dateStr=document.getElementById('inp-date').value;
   if(!dateStr){showToast('Please enter a date of birth','error');return;}
@@ -1418,7 +1393,6 @@ function renderTransits(d){
   const now=new Date();
   const Jn=jd(now.getFullYear(),now.getMonth()+1,now.getDate(),now.getHours()+now.getMinutes()/60);
   const tpl=calcPlanets(Jn,d.ay);
-  const lg_now=calcLagna(Jn,d.lat,d.lon,d.ay);
   document.getElementById('transit-info-bar').textContent=`Transit positions: ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
   drawChart(document.getElementById('transit-svg'),tpl,d.lagna,510);
   const lr=rashi(d.lagna);
@@ -1437,7 +1411,7 @@ function renderTransits(d){
 }
 
 function calcVarshaphal(){
-  const d=G;if(!d)return;
+  const d=G;if(!d){showToast('Generate a birth chart first','error');return;}
   const yr=parseInt(document.getElementById('varsha-yr')?.value)||new Date().getFullYear();
   const age=yr-d.yr;
   const Jv=d.J+(age*365.2422);
@@ -1553,7 +1527,6 @@ function castPrashna(){
 
 function renderRemedies(d){
   const sb=calcShadbala(d.pl,d.lagna,d.J);
-  const SC2={exalted:'tex',debilitated:'tde',own:'tow',friendly:'tfr',enemy:'ten',neutral:'tne'};
   document.getElementById('remedy-grid').innerHTML=PE.map((pn,pi)=>{
     const rem=REM[pn];if(!rem)return'';
     const rs=rashi(d.pl[pn].lon),st=pi<7?pStatus(pn,rs):'neutral';
@@ -1650,7 +1623,7 @@ function deleteChart(id){
   renderSaved();
 }
 
-// Init
+// Init saved charts on load
 renderSaved();
 
 // ════════════════════════════════════════════════════
@@ -1684,12 +1657,9 @@ function showToast(msg,type,dur){
 // ── Modal helpers ─────────────────────────────────
 function openModal(id){const m=document.getElementById(id);if(m)m.classList.add('show');}
 function closeModal(id){const m=document.getElementById(id);if(m)m.classList.remove('show');}
-// Close on backdrop click
 document.addEventListener('click',function(e){
   if(e.target.classList.contains('modal-overlay'))e.target.classList.remove('show');
 });
-// ESC key closes modals
-// keyboard shortcuts: Ctrl+Enter=Calculate, Ctrl+S=Save, Ctrl+P=Print, Ctrl+E=Export, ?=About
 document.addEventListener('keydown',function(e){
   if(e.key==='Escape')document.querySelectorAll('.modal-overlay.show').forEach(m=>m.classList.remove('show'));
 });
@@ -1698,17 +1668,17 @@ document.addEventListener('keydown',function(e){
 function showFAB(){document.getElementById('fab-bar')?.classList.add('show');}
 function hideFAB(){document.getElementById('fab-bar')?.classList.remove('show');}
 
-// ── Override calculateKundali with loading + error handling ──
-const _origCalc=calculateKundali;
-calculateKundali=function(){
+// ── calculateKundali public API (with loading overlay + error handling) ──
+// BUG FIX: Converted from a reassigned function variable to a clean wrapper
+// so the core logic (_calculateKundaliCore) is never accidentally shadowed.
+function calculateKundali(){
   const dateStr=document.getElementById('inp-date').value;
   if(!dateStr){showToast('Please enter a date of birth','error');return;}
   const loaderMsgs=['Consulting the stars...','Calculating planetary positions...','Drawing the cosmic map...','Computing Dasha periods...','Detecting Yogas...'];
   showLoading(loaderMsgs[Math.floor(Math.random()*loaderMsgs.length)]);
-  // Use setTimeout so the loading overlay renders before heavy computation
   setTimeout(function(){
     try{
-      _origCalc();
+      _calculateKundaliCore();
       showFAB();
       showToast('Kundali calculated successfully ✦','success');
     }catch(err){
@@ -1718,9 +1688,7 @@ calculateKundali=function(){
       hideLoading();
     }
   },60);
-};
-
-// saveChart() already defined with toast support above
+}
 
 // ── Share helpers ─────────────────────────────────
 function buildShareLink(){
@@ -1757,9 +1725,7 @@ function getShareText(){
 }
 
 function shareWhatsApp(){
-  const text=encodeURIComponent(getShareText()+'
-
-'+buildShareLink());
+  const text=encodeURIComponent(getShareText()+'\n\n'+buildShareLink());
   window.open(`https://wa.me/?text=${text}`,'_blank');
   closeModal('share-modal');
 }
@@ -1779,15 +1745,12 @@ function shareFacebook(){
 
 function shareEmail(){
   const sub=encodeURIComponent(`Kundali Chart — ${G?.name||'Native'}`);
-  const body=encodeURIComponent(getShareText()+'
-
-View chart: '+buildShareLink());
+  const body=encodeURIComponent(getShareText()+'\n\nView chart: '+buildShareLink());
   window.location.href=`mailto:?subject=${sub}&body=${body}`;
   closeModal('share-modal');
 }
 
 // ── URL param auto-load ───────────────────────────
-// If the page is opened with chart params in the URL, auto-fill and calculate
 (function autoLoadFromURL(){
   try{
     const p=new URLSearchParams(location.search);
@@ -1809,7 +1772,6 @@ View chart: '+buildShareLink());
     document.getElementById('inp-tz').value='5.5';
     document.getElementById('inp-ayanamsa').value=ayk;
     document.getElementById('loc-det').textContent=`📍 ${city} — ${lat}°, ${lon}°`;
-    // Auto-calculate after a short delay
     setTimeout(calculateKundali,400);
   }catch(e){console.warn('URL param auto-load failed:',e);}
 })();
@@ -1859,7 +1821,6 @@ function exportPNG(){
 }
 
 function exportPDF(){
-  // Native browser print-to-PDF with optimised print styles
   closeModal('export-modal');
   showToast('Opening print dialog — choose "Save as PDF"','info',4000);
   setTimeout(()=>window.print(),600);
@@ -1868,7 +1829,6 @@ function exportPDF(){
 // ── PWA Service Worker Registration ──────────────
 if('serviceWorker' in navigator){
   window.addEventListener('load',()=>{
-    // Register inline service worker for offline caching
     const swCode=`
       const CACHE='kundali-v1';
       const ASSETS=['/'];
@@ -1876,8 +1836,7 @@ if('serviceWorker' in navigator){
       self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).catch(()=>caches.match('/'))));});
     `;
     const blob=new Blob([swCode],{type:'application/javascript'});
-    navigator.serviceWorker.register(URL.createObjectURL(blob))
-      .catch(()=>{}); // Silent fail — SW optional
+    navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(()=>{});
   });
 }
 
@@ -1899,7 +1858,7 @@ document.addEventListener('keydown',function(e){
   document.addEventListener('touchstart',e=>{touchX=e.changedTouches[0].screenX;},{passive:true});
   document.addEventListener('touchend',e=>{
     const dx=e.changedTouches[0].screenX-touchX;
-    if(Math.abs(dx)<60)return; // minimum swipe distance
+    if(Math.abs(dx)<60)return;
     const cur=document.querySelector('.tab-content.active');
     if(!cur)return;
     const idx=TAB_ORDER.indexOf(cur.id);
@@ -1909,28 +1868,30 @@ document.addEventListener('keydown',function(e){
   },{passive:true});
 })();
 
-// ── Visibility / analytics hook (privacy-first) ──
-document.addEventListener('visibilitychange',function(){
-  if(document.visibilityState==='visible'&&G){
-    // Could ping analytics here if added
-  }
-});
-
-// ── Accessibility: announce tab changes to screen readers ──
+// ── Tab switcher with proper ARIA support ─────────
+// BUG FIX: Also resets aria-selected=false on all other tabs when switching
 function T(id){
   document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>{
+    b.classList.remove('active');
+    b.setAttribute('aria-selected','false');
+  });
   const panel=document.getElementById(id);
   const btn=document.getElementById('tb-'+id);
   if(panel)panel.classList.add('active');
   if(btn){btn.classList.add('active');btn.setAttribute('aria-selected','true');}
-  // Announce to screen reader
   const announcer=document.getElementById('sr-announcer');
   if(announcer&&btn)announcer.textContent=btn.textContent.replace(/^[^\w]+/,'').trim()+' tab selected';
 }
 
-// ── Footer with version and shortcuts ────────────
-// Replace static footer with dynamic one
+// ── Dynamic year for Varshaphal ───────────────────
+// BUG FIX: Set varsha-yr to current year at runtime instead of hardcoded 2025
+(function(){
+  const el=document.getElementById('varsha-yr');
+  if(el)el.value=new Date().getFullYear();
+})();
+
+// ── Footer with shortcuts ─────────────────────────
 (function upgradeFooter(){
   const f=document.querySelector('footer');
   if(!f)return;
@@ -1941,7 +1902,7 @@ function T(id){
     <span style="color:rgba(245,234,213,.15)">·</span>
     <span style="color:rgba(245,234,213,.22);font-size:.72rem">Ctrl+Enter: Calculate · Ctrl+S: Save · Ctrl+P: Print · ?: About</span>
   </div>
-  <div>ॐ सर्वे भवन्तु सुखिनः · Kundali Pro Ultimate v2.0 · Free Professional Vedic Astrology · Deployed on Cloudflare Pages</div>`;
+  <div>ॐ सर्वे भवन्तु सुखिनः · Kundali Pro Ultimate v2.0 · Free Professional Vedic Astrology</div>`;
 })();
 
 // ── Screen-reader announcer element ──────────────
@@ -1963,6 +1924,217 @@ function T(id){
     panel.setAttribute('role','tabpanel');
   });
 })();
+</script>
+<script>
+const signToHouse = {
+  Aries: 1,
+  Taurus: 2,
+  Gemini: 3,
+  Cancer: 4,
+  Leo: 5,
+  Virgo: 6,
+  Libra: 7,
+  Scorpio: 8,
+  Sagittarius: 9,
+  Capricorn: 10,
+  Aquarius: 11,
+  Pisces: 12
+};
+async function getCoordinates(place) {
+  const res = await fetch(
+    `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(place)}`
+  );
 
+  const data = await res.json();
+
+  if (!data || data.length === 0) {
+    alert("Invalid place name");
+    throw new Error("Place not found");
+  }
+
+  return {
+    lat: parseFloat(data[0].lat),
+    lng: parseFloat(data[0].lon)
+  };
+}
+function drawBasicKundaliChart(lagnaSign, data) {
+  const svg = document.getElementById("chart-svg");
+  if (!svg) return;
+
+  svg.innerHTML = "";
+
+  const size = 510;
+  const center = size / 2;
+
+  // Outer square
+  svg.innerHTML += `
+    <rect x="10" y="10" width="${size-20}" height="${size-20}"
+      stroke="gold" fill="none" stroke-width="2"/>
+  `;
+
+  // Diamond shape
+  svg.innerHTML += `
+    <polygon points="
+      ${center},10 
+      ${size-10},${center} 
+      ${center},${size-10} 
+      10,${center}
+    " stroke="gold" fill="none"/>
+  `;
+
+  // Cross lines
+  svg.innerHTML += `
+    <line x1="${center}" y1="10" x2="${center}" y2="${size-10}" stroke="gold"/>
+    <line x1="10" y1="${center}" x2="${size-10}" y2="${center}" stroke="gold"/>
+  `;
+
+  // Houses
+  const houses = [
+    {x: center, y: 40, n: "1"},
+    {x: size-40, y: center, n: "7"},
+    {x: center, y: size-20, n: "4"},
+    {x: 30, y: center, n: "10"},
+    {x: size-120, y: 80, n: "2"},
+    {x: size-80, y: 160, n: "3"},
+    {x: size-80, y: size-120, n: "5"},
+    {x: size-120, y: size-60, n: "6"},
+    {x: 80, y: size-120, n: "8"},
+    {x: 120, y: size-60, n: "9"},
+    {x: 120, y: 80, n: "11"},
+    {x: 80, y: 160, n: "12"}
+  ];
+
+  // Draw house numbers
+  houses.forEach(h => {
+    svg.innerHTML += `
+      <text x="${h.x}" y="${h.y}" fill="gold" font-size="14" text-anchor="middle">
+        ${h.n}
+      </text>
+    `;
+  });
+
+  // Lagna mapping
+  const signToHouse = {
+    Aries: 1, Taurus: 2, Gemini: 3, Cancer: 4,
+    Leo: 5, Virgo: 6, Libra: 7, Scorpio: 8,
+    Sagittarius: 9, Capricorn: 10, Aquarius: 11, Pisces: 12
+  };
+
+  const lagnaHouse = signToHouse[lagnaSign];
+  const sunHouse = signToHouse[data?.astro?.sunSign];
+  const moonHouse = signToHouse[data?.astro?.moonSign];
+
+  if (lagnaHouse) {
+    const h = houses.find(h => h.n == lagnaHouse);
+    if (h) {
+      svg.innerHTML += `
+        <text x="${h.x}" y="${h.y + 15}" fill="red" font-size="16" text-anchor="middle">
+          Lagna
+        </text>
+      `;
+    }
+  }
+}
+  // Sun Placement
+  if (sunHouse) {
+    const s = houses.find(h => h.n == sunHouse);
+    if (s) {
+      svg.innerHTML += `
+        <text x="${s.x}" y="${s.y + 32}" fill="orange" font-size="16" text-anchor="middle">
+          ☀️
+        </text>
+      `;
+    }
+  }
+
+  // Moon Placement
+  if (moonHouse) {
+    const m = houses.find(h => h.n == moonHouse);
+    if (m) {
+      svg.innerHTML += `
+        <text x="${m.x}" y="${m.y + 48}" fill="silver" font-size="16" text-anchor="middle">
+          🌙
+        </text>
+      `;
+    }
+  }
+
+// Override old function safely
+window.generateKundali = async function () {
+  const name = document.getElementById("name").value;
+  const dob = document.getElementById("dob").value;
+  const time = document.getElementById("time").value;
+  const place = document.getElementById("place").value;
+
+try {
+  const coords = await getCoordinates(place);
+
+  // 🔥 Show loading
+  document.getElementById("results").classList.add("vis");
+
+  const personInfo = document.getElementById("person-info");
+  const lagnaInfo = document.getElementById("lagna-info");
+
+  if (personInfo) personInfo.innerHTML = "⏳ Generating Kundali...";
+  if (lagnaInfo) lagnaInfo.innerHTML = "";
+
+  // 🚀 FIXED FETCH
+  const res = await fetch("http://127.0.0.1:8787/api/kundali", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      name: name,
+      dob: dob,
+      time: time,
+      place: place,
+      lat: coords.lat,
+      lng: coords.lng,
+      timezone: 5.5
+    })
+  });
+
+const data = await res.json();
+drawBasicKundaliChart(data.astro?.lagna, data);
+if (personInfo && data) {
+  personInfo.innerHTML = `
+    <div><strong>Name:</strong> ${data.name || "-"}</div>
+    <div><strong>Date:</strong> ${data.birth?.date || "-"}</div>
+    <div><strong>Time:</strong> ${data.birth?.time || "-"}</div>
+    <div><strong>Place:</strong> ${data.birth?.place || "-"}</div>
+  `;
+}
+// 🔥 Fill Astro Info
+
+if (lagnaInfo && data) {
+  lagnaInfo.innerHTML = `
+    <div>☀️ Sun: ${data.astro?.sunSign || "-"}</div>
+    <div>🌙 Moon: ${data.astro?.moonSign || "-"}</div>
+    <div>⬆️ Lagna: ${data.astro?.lagna || "-"}</div>
+
+    <hr style="margin:10px 0; border-color:gold;">
+
+    <div><strong>🪐 Graha Sthiti</strong></div>
+    <div>☀️ Sun: ${data.astro?.sunSign || "-"}</div>
+    <div>🌙 Moon: ${data.astro?.moonSign || "-"}</div>
+    <div>♂️ Mars: Coming Soon</div>
+    <div>☿️ Mercury: Coming Soon</div>
+    <div>♃ Jupiter: Coming Soon</div>
+    <div>♀️ Venus: Coming Soon</div>
+    <div>♄ Saturn: Coming Soon</div>
+    <div>☊ Rahu: Coming Soon</div>
+    <div>☋ Ketu: Coming Soon</div>
+    <div>⬆️ Lagna: ${data.astro?.lagna || "-"}</div>
+    <div>✨ Nakshatra: ${data.astro?.nakshatra || "-"}</div>
+    <div>🔢 Pada: ${data.astro?.pada || "-"}</div>
+  `;
+}
+  } catch (err) {
+    document.getElementById("results").classList.add("vis");
+    console.error(err);
+  }
+
+};
 </script>
 </body></html>
